@@ -36,3 +36,11 @@ El controlador se encarga de mediar entre la vista y el modelo.
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
+    return model.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
+def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
+ return model.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
+def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
+    return model.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
+def getGeneros(catalog,genero, minimo, maximo)
+    return model.getGeneros(catalog,genero, minimo, maximo)

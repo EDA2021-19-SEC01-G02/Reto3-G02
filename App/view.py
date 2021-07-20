@@ -37,7 +37,11 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Consultar cuantas reproducciones de piezas musicales tienen Instrumentalness y Acousticness en un rango definido")
+    print("3- Consultar cuantas piezas no repetidas tienen Speechness y Liveness en un rango definido")
+    print("4- Consultar cuantas piezas no repetidas tienen Valence y Tempo en un rango definido")
+    print("5- Consultar cuantas piezas no repetidas se tienen de un genero y cuantos artistas se tienen en el genero")    
+    print("0- Salir")
 
 catalog = None
 
@@ -51,8 +55,34 @@ while True:
         print("Cargando información de los archivos ....")
 
     elif int(inputs[0]) == 2:
-        pass
-
+        caracteristica = input("Ingrese la primera caracteristica a buscar: ")
+        minimo = input("Ingrese el valor minimo de la primera caracteristica: ")
+        maximo = input("Ingrese el valor maximo de la primera caracteristica: ")
+        caracteristica_2 = input("Ingrese la segunda caracteristica a buscar: ")
+        minimo_2 = input("Ingrese el valor minimo de la segunda caracteristica: ")
+        maximo_2 = input("Ingrese el valor maximo de la segunda caracteristica: ")
+        caracteristicas = controller.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
+        printCaracteristicas(caracteristicas)
+    elif int(inputs[0]) == 3:
+        minimo = input("Ingrese el valor minimo de Liveness: ")
+        maximo = input("Ingrese el valor maximo de Liveness: ")
+        minimo_2 = input("Ingrese el valor minimo de Speechness: ")
+        maximo_2 = input("Ingrese el valor maximo de Speechness: ")
+        festejar = controller.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
+        printFestejar(festejar)
+    elif int(inputs[0]) == 4:
+        minimo = input("Ingrese el valor minimo de Valence: ")
+        maximo = input("Ingrese el valor maximo de Valence: ")
+        minimo_2 = input("Ingrese el valor minimo de Tempo: ")
+        maximo_2 = input("Ingrese el valor maximo de Tempo: ")
+        ruptura = controller.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
+        printRuptura(ruptura)
+    elif int(inputs[0]) == 5:
+        genero = input("Ingrese el nombre del genero musical a buscar: ")
+        minimo = input("Ingrese el valor minimo de Valence: ")
+        maximo = input("Ingrese el valor maximo de Valence: ")
+        generos_m = controller.getGeneros(catalog,genero, minimo, maximo)
+        printRuptura(generos_m)
     else:
         sys.exit(0)
 sys.exit(0)

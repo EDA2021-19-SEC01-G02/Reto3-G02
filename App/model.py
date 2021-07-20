@@ -48,3 +48,7 @@ los mismos.
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento
+def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
+def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
+def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
+def getGeneros(catalog,genero, minimo, maximo):
