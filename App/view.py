@@ -53,6 +53,11 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog = controller.initCatalog()
+        print('Eventos cargados: ' + str(controller.musicaSize(catalog)))
+        print('Total de artistas unicos cargados: ' + str(controller.artistasSize(catalog)))
+        print('Total de pistas de audio unicas cargadas: ' + str(controller.pistasSize(catalog)))
+        
 
     elif int(inputs[0]) == 2:
         caracteristica = input("Ingrese la primera caracteristica a buscar: ")

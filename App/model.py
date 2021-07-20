@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.ADT import orderedmap as om
 assert cf
 
 """
@@ -39,9 +40,33 @@ los mismos.
 
 # Construccion de modelos
 
+def newCatalog():
+    """ Inicializa el analizador
+
+    Crea una lista vacia para guardar todos los crimenes
+    Se crean indices (Maps) por los siguientes criterios:
+    -Fechas
+
+    Retorna el analizador inicializado.
+    """
+    catalog = {'canciones': None,
+                'categories': None
+                }
+
+    catalog['videos'] = lt.newList('ARRAY_LIST')
+    catalog['dateIndex'] = om.newMap(omaptype='BST',
+                                      comparefunction=compareDates)
+    return catalog
+
+
 # Funciones para agregar informacion al catalogo
 
 # Funciones para creacion de datos
+def cancioesSize(catalog):
+    """
+    Número de canciones en el catalogo
+    """
+    return lt.size(catalog['canciones'])
 
 # Funciones de consulta
 
@@ -49,6 +74,10 @@ los mismos.
 
 # Funciones de ordenamiento
 def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
+    pass
 def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
+    pass
 def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
+    pass
 def getGeneros(catalog,genero, minimo, maximo):
+    pass
