@@ -53,26 +53,27 @@ def newCatalog():
                 'categories': None
                 }
 
-    catalog['videos'] = lt.newList('ARRAY_LIST')
+    catalog['songs'] = lt.newList('ARRAY_LIST')
     catalog['dateIndex'] = om.newMap(omaptype='BST',
                                       comparefunction=compareDates)
     return catalog
 
 
 # Funciones para agregar informacion al catalogo
-
+def loadSongs(catalog):
+    pass
 # Funciones para creacion de datos
-def cancioesSize(catalog):
+def songSize(catalog):
     """
     Número de canciones en el catalogo
     """
     return lt.size(catalog['canciones'])
+def artistsSize(catalog):
+    pass
+def pistaSize(catalog):
+    pass
 
 # Funciones de consulta
-
-# Funciones utilizadas para comparar elementos dentro de una lista
-
-# Funciones de ordenamiento
 def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
     pass
 def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
@@ -81,3 +82,7 @@ def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
     pass
 def getGeneros(catalog,genero, minimo, maximo):
     pass
+
+# Funciones utilizadas para comparar elementos dentro de una lista
+
+# Funciones de ordenamiento

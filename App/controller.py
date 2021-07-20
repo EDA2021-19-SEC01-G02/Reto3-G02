@@ -38,10 +38,33 @@ def initCatalog():
     return catalog
 
 # Funciones para la carga de datos
+def loadData(catalog):
+    loadCategories(catalog)
+    loadSongs(catalog)
+
+def loadSongs(catalog):
+    """
+    Carga los canciones del archivo. 
+    """
+    songfile = cf.data_dir + 'context_content_features-small.csv'
+    input_file = csv.DictReader(open(songfile, encoding='utf-8'))
+    for song in input_file:
+        model.addVideo(catalog, song)
 
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def songSize(catalog):
+    """
+    Número de canciones en el catalogo
+    """
+    return model.songSize(catalog)
+
+def artistsSize(catalog):
+    return model.artistsSize(catalog)
+def pistaSize(catalog):
+    return model.pistaSize(catalog)
+
 def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
     return model.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
 def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
