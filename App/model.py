@@ -49,40 +49,79 @@ def newCatalog():
 
     Retorna el analizador inicializado.
     """
-    catalog = {'canciones': None,
-                'categories': None
-                }
+    catalog = {'events': None,
+                'artists': None,
+                'tracks': None,
+                'listTracks': None}
 
-    catalog['songs'] = lt.newList('ARRAY_LIST')
-    catalog['dateIndex'] = om.newMap(omaptype='BST',
-                                      comparefunction=compareDates)
+    catalog['events'] = lt.newList('ARRAY_LIST')
+    catalog['listTracks'] = lt.newList('ARRAY_LIST')
+    catalog['artists'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
+    catalog['tracks'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
+
     return catalog
 
 
 # Funciones para agregar informacion al catalogo
-def loadSongs(catalog):
-    pass
+def loadEvent(catalog, event):
+    if mp.contains(catalog['artists'], event['artist_id'].strip()):
+        artist = me.getValue(mp.get(catalog['artists'], event['artist_id'].strip()))
+        lt.addLast(artist['events'], event)
+    else:
+        newArtist(catalog, event)
+        artist = me.getValue(mp.get(catalog['artists'], event['artist_id'].strip()))
+        lt.addLast(artist['events'], event)
+
+    if not mp.contains(catalog['tracks'], event['track_id'].strip()):
+        newTrack(catalog, event)
+        lt.addLast(catalog['listTracks'], event)
+
+    lt.addLast(catalog['events'], event)
+
+
 # Funciones para creacion de datos
-def songSize(catalog):
-    """
-    Número de canciones en el catalogo
-    """
-    return lt.size(catalog['canciones'])
-def artistsSize(catalog):
-    pass
-def pistaSize(catalog):
-    pass
+def newTrack(catalog, event):
+    track = {'id': None}
+
+    id = event['track_id']
+    track['id'] = id
+    mp.put(catalog['tracks'], id, track)
+    
+
+def newArtist(catalog, event):
+    artist = {'id': None,
+            'events': None}
+    
+    id = event['artist_id']
+    artist['id'] = id
+    artist['events'] = lt.newList('ARRAY_LIST')
+    mp.put(catalog['artists'], id, artist)
+
 
 # Funciones de consulta
+def eventSize(catalog):
+    return mp.size(catalog['events'])
+
+def artistSize(catalog):
+    return mp.size(catalog['artists'])
+
+def trackSize(catalog):
+    return lt.size(catalog['listTracks'])
+
 def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
     pass
+
 def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
     pass
+
 def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
     pass
+
 def getGeneros(catalog,genero, minimo, maximo):
     pass
 
-# Funciones utilizadas para comparar elementos dentro de una lista
+# Funciones de comparación
+def compareDates(song1,song2):
+    pass
 
 # Funciones de ordenamiento

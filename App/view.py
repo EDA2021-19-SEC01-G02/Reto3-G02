@@ -54,10 +54,10 @@ while True:
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
         catalog = controller.initCatalog()
-        print('Eventos cargados: ' + str(controller.songSize(catalog)))
-        print('Total de artistas unicos cargados: ' + str(controller.artistsSize(catalog)))
-        print('Total de pistas de audio unicas cargadas: ' + str(controller.pistasSize(catalog)))
-        
+        controller.loadData(catalog)
+        print('Eventos cargados: ' + str(controller.eventSize(catalog)))
+        print('Total de artistas unicos cargados: ' + str(controller.artistSize(catalog)))
+        print('Total de pistas de audio unicas cargadas: ' + str(controller.trackSize(catalog)))
 
     elif int(inputs[0]) == 2:
         caracteristica = input("Ingrese la primera caracteristica a buscar: ")
@@ -68,6 +68,7 @@ while True:
         maximo_2 = input("Ingrese el valor maximo de la segunda caracteristica: ")
         caracteristicas = controller.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
         printCaracteristicas(caracteristicas)
+
     elif int(inputs[0]) == 3:
         minimo = input("Ingrese el valor minimo de Liveness: ")
         maximo = input("Ingrese el valor maximo de Liveness: ")
@@ -75,6 +76,7 @@ while True:
         maximo_2 = input("Ingrese el valor maximo de Speechness: ")
         festejar = controller.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
         printFestejar(festejar)
+
     elif int(inputs[0]) == 4:
         minimo = input("Ingrese el valor minimo de Valence: ")
         maximo = input("Ingrese el valor maximo de Valence: ")
@@ -82,6 +84,7 @@ while True:
         maximo_2 = input("Ingrese el valor maximo de Tempo: ")
         ruptura = controller.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
         printRuptura(ruptura)
+
     elif int(inputs[0]) == 5:
         genero = input("Ingrese el nombre del genero musical a buscar: ")
         minimo = input("Ingrese el valor minimo de Valence: ")

@@ -39,37 +39,35 @@ def initCatalog():
 
 # Funciones para la carga de datos
 def loadData(catalog):
-    loadCategories(catalog)
-    loadSongs(catalog)
+    loadEvents(catalog)
 
-def loadSongs(catalog):
+def loadEvents(catalog):
     """
-    Carga los canciones del archivo. 
+    Carga los eventos del archivo. 
     """
     songfile = cf.data_dir + 'context_content_features-small.csv'
     input_file = csv.DictReader(open(songfile, encoding='utf-8'))
-    for song in input_file:
-        model.addVideo(catalog, song)
-
-# Funciones de ordenamiento
+    for event in input_file:
+        model.loadEvent(catalog, event)
 
 # Funciones de consulta sobre el catálogo
-def songSize(catalog):
-    """
-    Número de canciones en el catalogo
-    """
-    return model.songSize(catalog)
+def eventSize(catalog):
+    return model.eventSize(catalog)
 
-def artistsSize(catalog):
-    return model.artistsSize(catalog)
-def pistaSize(catalog):
-    return model.pistaSize(catalog)
+def artistSize(catalog):
+    return model.artistSize(catalog)
 
-def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
+def trackSize(catalog):
+    return model.trackSize(catalog)
+
+def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
     return model.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
-def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
- return model.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
-def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
+
+def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
+    return model.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
+
+def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
     return model.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
-def getGeneros(catalog,genero, minimo, maximo)
+
+def getGeneros(catalog,genero, minimo, maximo):
     return model.getGeneros(catalog,genero, minimo, maximo)
