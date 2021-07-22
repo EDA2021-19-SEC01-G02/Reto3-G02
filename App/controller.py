@@ -39,6 +39,7 @@ def initCatalog():
 
 # Funciones para la carga de datos
 def loadData(catalog):
+    loadSentiment(catalog)
     loadEvents(catalog)
 
 def loadEvents(catalog):
@@ -49,6 +50,15 @@ def loadEvents(catalog):
     input_file = csv.DictReader(open(songfile, encoding='utf-8'))
     for event in input_file:
         model.loadEvent(catalog, event)
+
+def loadSentiment(catalog):
+    """
+    Carga los eventos del archivo. 
+    """
+    sentimentfile = cf.data_dir + 'sentiment_values.csv'
+    input_file = csv.DictReader(open(sentimentfile, encoding='utf-8'))
+    for sentiment in input_file:
+        model.loadSentiment(catalog, sentiment)
 
 # Funciones de consulta sobre el catálogo
 def eventSize(catalog):

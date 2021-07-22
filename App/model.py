@@ -25,6 +25,7 @@
  """
 
 
+from math import ldexp
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
@@ -58,7 +59,35 @@ def newCatalog():
     catalog['listTracks'] = lt.newList('ARRAY_LIST')
     catalog['artists'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
     catalog['tracks'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
+    catalog['sentiments'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
+    artist = {'id': None,
+            'events': None}
+    
+    id = event['artist_id']
+    artist['id'] = id
+    artist['events'] = lt.newList('ARRAY_LIST')
+    mp.put(catalog['artists'], id, artist)
 
+    
+    caracteristicas = {'Instrumentalness': None,
+                'liveness': None,
+                'speechiness': None,
+                'danceability': None,
+                'valence': None,
+                'loudness': None,
+                'tempo': None,
+                'acousticness': None,
+                'mode': None,
+                'key': None,}
+    caracteristicas["Instrumentalness"] =  om.newMap(omaptype='RBT')
+    caracteristicas["liveness"] =  om.newMap(omaptype='RBT')
+    caracteristicas["speechiness"] =  om.newMap(omaptype='RBT')
+    caracteristicas["danceability"] =  om.newMap(omaptype='RBT')
+    caracteristicas["valence"] =  om.newMap(omaptype='RBT')
+    caracteristicas["tempo"] =  om.newMap(omaptype='RBT')
+    caracteristicas["acousticness"] =  om.newMap(omaptype='RBT')
+    caracteristicas["mode"] =  om.newMap(omaptype='RBT')
+    caracteristicas["key"] =  om.newMap(omaptype='RBT')
     return catalog
 
 
@@ -77,16 +106,64 @@ def loadEvent(catalog, event):
         lt.addLast(catalog['listTracks'], event)
 
     lt.addLast(catalog['events'], event)
-
-
+"""""
+def loadSentiment(catalog, sentiment):
+    newSentiment(catalog, sentiment)
+"""""
 # Funciones para creacion de datos
+"""""
+def newSentiment(catalog, sentiment):
+    sentiment_value = {"hashtag":None}
+
+    hashtag = sentiment["hashtag"]
+    sentiment_value["hashtag"] = hashtag
+    mp.put(catalog["sentiments"], hashtag, sentiment)
+"""""   
+
+def loadCaracteristics(catalog, caracteristicas, event, caracteristica_s):
+    caracteristica_s = str(caracteristica_s)
+    caracteristica = event[caracteristica_s]
+    if caracteristicas[caracteristica_s] != None:
+        om.put(caracteristicas[caracteristica_s], cancion["caracteris"], cancion["id"])
+        lt.addLast(cancion["id"], event['track_id'])
+    else:
+        cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
+        om.put(caracteristicas[caracteristica_s], cancion["caracteris"], cancion["id"])
+        lt.addLast(cancion["id"], event['track_id'])
+
+"""""
+    if om.contains(me.getValue(catalog['caracteristicas'],"Instrumentalness") ,caracteristica):
+        valor = me.getValue(mp.get(catalog['caracteristicas'],"Instrumentalness") ,caracteristica))
+        om.put(catalog['caracteristicas'], "Instrumentalness", valor)
+    else:
+        newTree(catalog, event)
+        valor = me.getValue(mp.get(catalog['caracteristicas'],"Instrumentalness") ,caracteristica))
+        om.put(catalog['caracteristicas'], "Instrumentalness", valor)
+"""""
+def addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s):
+    cancion = {'caracteris': None,
+                'id': None}
+
+        cancion['caracteris'] = event[caracteristica_s]
+        cancion['id'] = lt.newList('ARRAY_LIST')
+
+
+def newTree(catalog, event ):
+    tree = {'value': None}
+
+    value = event['Instrumentalness']
+    tree['id'] = value
+    mp.put(catalog['caracteristicas'], value, tree)
+
+
+
 def newTrack(catalog, event):
     track = {'id': None}
 
     id = event['track_id']
     track['id'] = id
     mp.put(catalog['tracks'], id, track)
-    
+
 
 def newArtist(catalog, event):
     artist = {'id': None,
@@ -109,7 +186,7 @@ def trackSize(catalog):
     return lt.size(catalog['listTracks'])
 
 def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
-    pass
+    
 
 def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
     pass
