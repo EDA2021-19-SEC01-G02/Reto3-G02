@@ -125,22 +125,13 @@ def loadCaracteristics(catalog, caracteristicas, event, caracteristica_s):
     caracteristica = event[caracteristica_s]
     if caracteristicas[caracteristica_s] != None:
         cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
-        valor = me.getValue(mp.get(catalog[caracteristicas], caracteristica)
+        valor = me.getValue(mp.get(catalog[caracteristicas], caracteristica))
         lt.addLast(cancion["id"], event['track_id'])
     else:
         cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
         om.put(caracteristicas[caracteristica_s], cancion["caracteris"], cancion["id"])
         lt.addLast(cancion["id"], event['track_id'])
 
-"""""
-    if om.contains(me.getValue(catalog['caracteristicas'],"Instrumentalness") ,caracteristica):
-        valor = me.getValue(mp.get(catalog['caracteristicas'],"Instrumentalness") ,caracteristica))
-        om.put(catalog['caracteristicas'], "Instrumentalness", valor)
-    else:
-        newTree(catalog, event)
-        valor = me.getValue(mp.get(catalog['caracteristicas'],"Instrumentalness") ,caracteristica))
-        om.put(catalog['caracteristicas'], "Instrumentalness", valor)
-"""""
 def addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s):
     cancion = {'caracteris': None,
                 'id': None}

@@ -58,11 +58,7 @@ while True:
         print('Eventos cargados: ' + str(controller.eventSize(catalog)))
         print('Total de artistas unicos cargados: ' + str(controller.artistSize(catalog)))
         print('Total de pistas de audio unicas cargadas: ' + str(controller.trackSize(catalog)))
-        print('Titulo primer video: ' + str((catalog['events'][0]))
-        print('Titulo primer video: ' + str(catalog['events'])[2])
-        print('Titulo primer video: ' + str(catalog['events'])[3])
-        print('Titulo primer video: ' + str(catalog['events'])[4])
-        print('Titulo primer video: ' + str(catalog['events'])[5])
+
 
 
 
