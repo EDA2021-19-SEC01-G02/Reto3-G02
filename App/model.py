@@ -124,7 +124,8 @@ def loadCaracteristics(catalog, caracteristicas, event, caracteristica_s):
     caracteristica_s = str(caracteristica_s)
     caracteristica = event[caracteristica_s]
     if caracteristicas[caracteristica_s] != None:
-        om.put(caracteristicas[caracteristica_s], cancion["caracteris"], cancion["id"])
+        cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
+        valor = me.getValue(mp.get(catalog[caracteristicas], caracteristica)
         lt.addLast(cancion["id"], event['track_id'])
     else:
         cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
