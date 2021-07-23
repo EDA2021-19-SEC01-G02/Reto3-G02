@@ -37,13 +37,35 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Consultar cuantas reproducciones de piezas musicales tienen Instrumentalness y Acousticness en un rango definido")
+    print("2- Consultar cuantas reproducciones de piezas musicales tienen 2 características en un rango definido")
     print("3- Consultar cuantas piezas no repetidas tienen Speechness y Liveness en un rango definido")
     print("4- Consultar cuantas piezas no repetidas tienen Valence y Tempo en un rango definido")
     print("5- Consultar cuantas piezas no repetidas se tienen de un genero y cuantos artistas se tienen en el genero")    
     print("0- Salir")
 
+def printCaracteristicas(c1, min1, max1, c2, min2, max2, repro, art):
+    print('++++++ Req No. 1 resultados... ++++++')
+    print('{} entre {} y {} y {} entre {} y {}.'.format(c1.capitalize(), min1, max1, c2.capitalize(), min2, max2))
+    print('Total de reproducciones: {}. Total de artistas únicos: {}'.format(repro, art))
+
+def printKaraoke(min1, max1, min2, max2, num, tracks):
+    print('++++++ Req No. 2 resultados... ++++++')
+    print('Liveness entre {} y {}'.format(min1, max1))
+    print('Speechiness entre {} y {}'.format(min2, max2))
+    print('Total de canciones únicas: {}\n'.format(num))
+    print('--- Id canciones únicas ---')
+    for i in range(1, lt.size(tracks)+1):
+        track = lt.getElement(tracks, i)
+        print('Track {}: {} con liveness de {:.3f} y speechiness de {:.3f}'.format(i, track['track_id'], float(track['liveness']), float(track['speechiness'])))
+
+
+
+
+
+
 catalog = None
+
+
 
 """
 Menu principal
@@ -59,26 +81,23 @@ while True:
         print('Total de artistas unicos cargados: ' + str(controller.artistSize(catalog)))
         print('Total de pistas de audio unicas cargadas: ' + str(controller.trackSize(catalog)))
 
-
-
-
     elif int(inputs[0]) == 2:
-        caracteristica = input("Ingrese la primera caracteristica a buscar: ")
-        minimo = input("Ingrese el valor minimo de la primera caracteristica: ")
-        maximo = input("Ingrese el valor maximo de la primera caracteristica: ")
-        caracteristica_2 = input("Ingrese la segunda caracteristica a buscar: ")
-        minimo_2 = input("Ingrese el valor minimo de la segunda caracteristica: ")
-        maximo_2 = input("Ingrese el valor maximo de la segunda caracteristica: ")
-        caracteristicas = controller.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
-        printCaracteristicas(caracteristicas)
+        c1 = input("Ingrese la primera caracteristica a buscar: ")
+        min1 = float(input("Ingrese el valor minimo de la primera caracteristica: "))
+        max1 = float(input("Ingrese el valor maximo de la primera caracteristica: "))
+        c2 = input("Ingrese la segunda caracteristica a buscar: ")
+        min2 = float(input("Ingrese el valor minimo de la segunda caracteristica: "))
+        max2 = float(input("Ingrese el valor maximo de la segunda caracteristica: "))
+        repro, art, map = controller.getCaracteristicas(catalog, c1, min1, max1, c2, min2, max2)
+        printCaracteristicas(c1, min1, max1, c2, min2, max2, repro, art)
 
     elif int(inputs[0]) == 3:
-        minimo = input("Ingrese el valor minimo de Liveness: ")
-        maximo = input("Ingrese el valor maximo de Liveness: ")
-        minimo_2 = input("Ingrese el valor minimo de Speechness: ")
-        maximo_2 = input("Ingrese el valor maximo de Speechness: ")
-        festejar = controller.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
-        printFestejar(festejar)
+        min1 = float(input("Ingrese el valor minimo de Liveness: "))
+        max1 = float(input("Ingrese el valor maximo de Liveness: "))
+        min2 = float(input("Ingrese el valor minimo de Speechiness: "))
+        max2 = float(input("Ingrese el valor maximo de Speechiness: "))
+        num, tracks = controller.getKaraoke(catalog, min1, max1, min2, max2)
+        printKaraoke(min1, max1, min2, max2, num, tracks)
 
     elif int(inputs[0]) == 4:
         minimo = input("Ingrese el valor minimo de Valence: ")

@@ -39,7 +39,6 @@ def initCatalog():
 
 # Funciones para la carga de datos
 def loadData(catalog):
-    loadSentiment(catalog)
     loadEvents(catalog)
 
 
@@ -53,15 +52,6 @@ def loadEvents(catalog):
         model.loadEvent(catalog, event)
         model.loadCaracteristicas(catalog, event)
 
-def loadSentiment(catalog):
-    """
-    Carga los eventos del archivo. 
-    """
-    sentimentfile = cf.data_dir + 'sentiment_values.csv'
-    input_file = csv.DictReader(open(sentimentfile, encoding='utf-8'))
-    for sentiment in input_file:
-        model.loadSentiment(catalog, sentiment)
-
 # Funciones de consulta sobre el catálogo
 def eventSize(catalog):
     return model.eventSize(catalog)
@@ -72,14 +62,16 @@ def artistSize(catalog):
 def trackSize(catalog):
     return model.trackSize(catalog)
 
-def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
-    return model.getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2)
+def getCaracteristicas(catalog, c1, min1, max1, c2, min2, max2):
+    return model.getCaracteristicas(catalog, c1, min1, max1, c2, min2, max2)
 
-def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
-    return model.getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2)
+def getKaraoke(catalog, min1, max1, min2, max2):
+    return model.getKaraoke(catalog, min1, max1, min2, max2)
 
 def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
     return model.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
 
 def getGeneros(catalog,genero, minimo, maximo):
     return model.getGeneros(catalog,genero, minimo, maximo)
+
+
