@@ -59,7 +59,7 @@ def newCatalog():
     catalog['listTracks'] = lt.newList('ARRAY_LIST')
     catalog['artists'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
     catalog['tracks'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
-    catalog['sentiments'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
+    catalog['ids'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
     artist = {'id': None,
             'events': None}
     
@@ -81,13 +81,15 @@ def newCatalog():
                 'key': None,}
     caracteristicas["Instrumentalness"] =  om.newMap(omaptype='RBT')
     caracteristicas["liveness"] =  om.newMap(omaptype='RBT')
-    caracteristicas["speechiness"] =  om.newMap(omaptype='RBT')
+    caracteristicas["speechness"] =  om.newMap(omaptype='RBT')
     caracteristicas["danceability"] =  om.newMap(omaptype='RBT')
     caracteristicas["valence"] =  om.newMap(omaptype='RBT')
     caracteristicas["tempo"] =  om.newMap(omaptype='RBT')
     caracteristicas["acousticness"] =  om.newMap(omaptype='RBT')
     caracteristicas["mode"] =  om.newMap(omaptype='RBT')
     caracteristicas["key"] =  om.newMap(omaptype='RBT')
+    catalog["caracteristicas"]= caracteristicas
+
     return catalog
 
 
@@ -119,26 +121,39 @@ def newSentiment(catalog, sentiment):
     sentiment_value["hashtag"] = hashtag
     mp.put(catalog["sentiments"], hashtag, sentiment)
 """""   
+def addID(catalog, event):
+    cat = newID(catalog, event)
+    mp.put(catalog['ids'], cat["track"], cat["evento"])
 
-def loadCaracteristics(catalog, caracteristicas, event, caracteristica_s):
-    caracteristica_s = str(caracteristica_s)
-    caracteristica = event[caracteristica_s]
-    if caracteristicas[caracteristica_s] != None:
-        cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
-        valor = me.getValue(mp.get(catalog[caracteristicas], caracteristica))
-        lt.addLast(cancion["id"], event['track_id'])
+
+def newID(catalog, event):
+    """
+    Esta estructura almacena los tags utilizados para marcar libros.
+    """
+    dicc = {'track': None,
+            'evento': None}
+
+    dicc['track'] = event['track_id']
+    dicc['evento'] = event
+
+    return dicc
+
+
+def loadCaracteristica(caracteristica_omap, event, caracteristica_s):
+    llave = event[caracteristica_s]
+    if om.contains(caracteristica_omap, llave):
+        valor =  me.getValue(om.get(caracteristica_omap,llave))
+        lt.addLast(valor, event['track_id'])
     else:
-        cancion = addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s)
-        om.put(caracteristicas[caracteristica_s], cancion["caracteris"], cancion["id"])
-        lt.addLast(cancion["id"], event['track_id'])
+        valor = lt.newList('ARRAY_LIST')
+        om.put(caracteristica_omap, llave, valor,)
+        lt.addLast(valor, event['track_id'])
 
-def addTracks_caracteristica(catalog, caracteristicas, event, caracteristica_s):
-    cancion = {'caracteris': None,
-                'id': None}
+def loadCaracteristicas(catalog, event):
+    loadCaracteristica(catalog["carateristicas"]['Instrumentalness'], event,"instrumentalness")
+    loadCaracteristica(catalog["carateristicas"]['Instrumentalness'], event,"instrumentalness")
 
-        cancion['caracteris'] = event[caracteristica_s]
-        cancion['id'] = lt.newList('ARRAY_LIST')
-
+    mapa con track id y el evento
 
 def newTree(catalog, event ):
     tree = {'value': None}
@@ -177,8 +192,14 @@ def artistSize(catalog):
 def trackSize(catalog):
     return lt.size(catalog['listTracks'])
 
-def getCaracteristicas(catalog, caracteristica, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
-    
+def getCaracteristicas(catalog, caracteristica, caracteristicas, minimo, maximo, caracteristica_2, minimo_2, maximo_2):
+    lista = lt.newList('ARRAY_LIST')
+    if caracteristica.lower().strip() in caracteristicas:
+        if om.isEmpty(caracteristicas[caracteristica]) == False:
+            if caracteristica['caracteris']> minimo and caracteristica['caracteris']<maximo:
+                lt.addLast(lista, cancion["id"])
+            
+
 
 def getKaraoke(catalog,minimo, maximo, minimo_2, maximo_2):
     pass

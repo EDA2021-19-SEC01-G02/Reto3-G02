@@ -42,6 +42,7 @@ def loadData(catalog):
     loadSentiment(catalog)
     loadEvents(catalog)
 
+
 def loadEvents(catalog):
     """
     Carga los eventos del archivo. 
@@ -50,6 +51,7 @@ def loadEvents(catalog):
     input_file = csv.DictReader(open(songfile, encoding='utf-8'))
     for event in input_file:
         model.loadEvent(catalog, event)
+        model.loadCaracteristicas(catalog, event)
 
 def loadSentiment(catalog):
     """
