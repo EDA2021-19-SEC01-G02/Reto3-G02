@@ -68,8 +68,8 @@ def getCaracteristicas(catalog, c1, min1, max1, c2, min2, max2):
 def getKaraoke(catalog, min1, max1, min2, max2):
     return model.getKaraoke(catalog, min1, max1, min2, max2)
 
-def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
-    return model.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
+def getBroken(catalog, min1, max1, min2, max2):
+    return model.getBroken(catalog, min1, max1, min2, max2)
 
 def getGeneros(catalog,genero, minimo, maximo):
     return model.getGeneros(catalog,genero, minimo, maximo)

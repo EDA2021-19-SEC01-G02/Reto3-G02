@@ -58,8 +58,15 @@ def printKaraoke(min1, max1, min2, max2, num, tracks):
         track = lt.getElement(tracks, i)
         print('Track {}: {} con liveness de {:.3f} y speechiness de {:.3f}'.format(i, track['track_id'], float(track['liveness']), float(track['speechiness'])))
 
-
-
+def printBroken(min1, max1, min2, max2, num, tracks):
+    print('++++++ Req No. 3 resultados... ++++++')
+    print('Valence entre {} y {}'.format(min1, max1))
+    print('Tempo entre {} y {}'.format(min2, max2))
+    print('Total de canciones únicas: {}\n'.format(num))
+    print('--- Id canciones únicas ---')
+    for i in range(1, lt.size(tracks)+1):
+        track = lt.getElement(tracks, i)
+        print('Track {}: {} con valence de {:.3f} y tempo de {:.3f}'.format(i, track['track_id'], float(track['valence']), float(track['tempo'])))
 
 
 
@@ -100,12 +107,12 @@ while True:
         printKaraoke(min1, max1, min2, max2, num, tracks)
 
     elif int(inputs[0]) == 4:
-        minimo = input("Ingrese el valor minimo de Valence: ")
-        maximo = input("Ingrese el valor maximo de Valence: ")
-        minimo_2 = input("Ingrese el valor minimo de Tempo: ")
-        maximo_2 = input("Ingrese el valor maximo de Tempo: ")
-        ruptura = controller.getRuptura(catalog,minimo, maximo, minimo_2, maximo_2)
-        printRuptura(ruptura)
+        min1 = float(input("Ingrese el valor minimo de Valence: "))
+        max1 = float(input("Ingrese el valor maximo de Valence: "))
+        min2 = float(input("Ingrese el valor minimo de Tempo: "))
+        max2 = float(input("Ingrese el valor maximo de Tempo: "))
+        num, tracks = controller.getBroken(catalog, min1, max1, min2, max2)
+        printBroken(min1, max1, min2, max2, num, tracks)
 
     elif int(inputs[0]) == 5:
         genero = input("Ingrese el nombre del genero musical a buscar: ")

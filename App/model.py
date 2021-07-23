@@ -175,8 +175,23 @@ def getKaraoke(catalog, min1, max1, min2, max2):
 
     return repro, eightTracks
 
-def getRuptura(catalog,minimo, maximo, minimo_2, maximo_2):
-    pass
+
+def getBroken(catalog, min1, max1, min2, max2):
+    repro, art, map = getCaracteristicas(catalog, 'valence', min1, max1, 'tempo', min2, max2)
+    eightTracks = lt.newList('ARRAY_LIST')
+    tracks = mp.valueSet(map)
+    if lt.size(tracks) >= 8:
+        num = 0
+        listNum = lt.newList('ARRAY_LIST')
+        while num < 8:
+            n = random.randint(1, lt.size(tracks))
+            if lt.isPresent(listNum, n) == 0:
+                lt.addLast(eightTracks, lt.getElement(tracks, n))
+                lt.addLast(listNum, n)
+                num += 1
+    
+    return repro, eightTracks
+
 
 def getGeneros(catalog,genero, minimo, maximo):
     pass
