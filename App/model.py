@@ -151,8 +151,14 @@ def loadCaracteristica(caracteristica_omap, event, caracteristica_s):
 
 def loadCaracteristicas(catalog, event):
     loadCaracteristica(catalog["carateristicas"]['Instrumentalness'], event,"instrumentalness")
-    loadCaracteristica(catalog["carateristicas"]['Instrumentalness'], event,"instrumentalness")
-
+    loadCaracteristica(catalog["carateristicas"]['liveness'], event,"liveness")
+    loadCaracteristica(catalog["carateristicas"]['speechness'], event,"speechness")
+    loadCaracteristica(catalog["carateristicas"]['danceability'], event,"danceability")
+    loadCaracteristica(catalog["carateristicas"]['valence'], event,"valence")
+    loadCaracteristica(catalog["carateristicas"]['tempo'], event,"tempo")
+    loadCaracteristica(catalog["carateristicas"]['acousticness'], event,"acousticness")
+    loadCaracteristica(catalog["carateristicas"]['mode'], event,"mode")
+    loadCaracteristica(catalog["carateristicas"]['key'], event,"key")
 
 def newTree(catalog, event ):
     tree = {'value': None}
