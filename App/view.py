@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -44,11 +45,14 @@ def printMenu():
     print("0- Salir")
 
 def printCaracteristicas(c1, min1, max1, c2, min2, max2, repro, art):
+    print(' ')
     print('++++++ Req No. 1 resultados... ++++++')
     print('{} entre {} y {} y {} entre {} y {}.'.format(c1.capitalize(), min1, max1, c2.capitalize(), min2, max2))
     print('Total de reproducciones: {}. Total de artistas únicos: {}'.format(repro, art))
+    print(' ')
 
 def printKaraoke(min1, max1, min2, max2, num, tracks):
+    print(' ')
     print('++++++ Req No. 2 resultados... ++++++')
     print('Liveness entre {} y {}'.format(min1, max1))
     print('Speechiness entre {} y {}'.format(min2, max2))
@@ -57,8 +61,10 @@ def printKaraoke(min1, max1, min2, max2, num, tracks):
     for i in range(1, lt.size(tracks)+1):
         track = lt.getElement(tracks, i)
         print('Track {}: {} con liveness de {:.3f} y speechiness de {:.3f}'.format(i, track['track_id'], float(track['liveness']), float(track['speechiness'])))
+    print(' ')
 
 def printBroken(min1, max1, min2, max2, num, tracks):
+    print(' ')
     print('++++++ Req No. 3 resultados... ++++++')
     print('Valence entre {} y {}'.format(min1, max1))
     print('Tempo entre {} y {}'.format(min2, max2))
@@ -67,11 +73,32 @@ def printBroken(min1, max1, min2, max2, num, tracks):
     for i in range(1, lt.size(tracks)+1):
         track = lt.getElement(tracks, i)
         print('Track {}: {} con valence de {:.3f} y tempo de {:.3f}'.format(i, track['track_id'], float(track['valence']), float(track['tempo'])))
+    print(' ')
 
+def printGenero(gen):
+    print('======== {} ========'.format(gen['name'].upper()))
+    print('Reproducciones de {}: {} con {} artistas diferentes'.format(gen['name'].capitalize(), lt.size(gen['events']), lt.size(gen['artists'])))
+    print('----- Algunos artistas de {} -----'.format(gen['name'].capitalize()))
+    for i in range(1, 11):
+        print('Artist {}: {}'.format(i, lt.getElement(gen['artists'], i)))
+    print(' ')
 
+def printMenuGenero(total):
+    print(' ')
+    print('++++++ Req No. 4 resultados... ++++++')
+    print('Total de reproducciones: {}'.format(total))
+    print(' ')
+
+def printGeneros(listaGen):
+    total = 0
+    for i in range(1, lt.size(listaGen)+1):
+        total += lt.size(lt.getElement(listaGen, i)['events'])
+    printMenuGenero(total)
+    for i in range(1, lt.size(listaGen)+1):
+        gen = lt.getElement(listaGen, i)
+        printGenero(gen)
 
 catalog = None
-
 
 
 """
@@ -115,11 +142,22 @@ while True:
         printBroken(min1, max1, min2, max2, num, tracks)
 
     elif int(inputs[0]) == 5:
-        genero = input("Ingrese el nombre del genero musical a buscar: ")
-        minimo = input("Ingrese el valor minimo de Valence: ")
-        maximo = input("Ingrese el valor maximo de Valence: ")
-        generos_m = controller.getGeneros(catalog,genero, minimo, maximo)
-        printRuptura(generos_m)
+        print("1- Consultar los géneros musicales creados")
+        print("2- Crear un nuevo género")
+        o = int(input('Seleccione una opción para continuar\n'))
+        if o == 1:
+            names = input('Ingrese los nombres de los géneros que quiere consultar separados por comas:\n')
+            listaGen = controller.getGeneros(catalog, names)
+            printGeneros(listaGen)
+        elif o == 2:
+            name = input("Ingrese el nombre del género musical a crear: ")
+            min = float(input("Ingrese el valor minimo de Tempo: "))
+            max = float(input("Ingrese el valor maximo de Tempo: "))
+            gen = controller.crearGenero(catalog, name, min, max)
+            printMenuGenero(lt.size(gen['events']))
+            printGenero(gen)
+        else:
+            print('Digite una opción disponible')
     else:
         sys.exit(0)
 sys.exit(0)

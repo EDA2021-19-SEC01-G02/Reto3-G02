@@ -31,21 +31,16 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de libros
 def initCatalog():
-    """
-    Llama la funcion de inicializacion del catalogo del modelo.
-    """
     catalog = model.newCatalog()
     return catalog
 
 # Funciones para la carga de datos
 def loadData(catalog):
     loadEvents(catalog)
+    crearGenerosIniciales(catalog)
 
 
 def loadEvents(catalog):
-    """
-    Carga los eventos del archivo. 
-    """
     songfile = cf.data_dir + 'context_content_features-small.csv'
     input_file = csv.DictReader(open(songfile, encoding='utf-8'))
     for event in input_file:
@@ -71,7 +66,13 @@ def getKaraoke(catalog, min1, max1, min2, max2):
 def getBroken(catalog, min1, max1, min2, max2):
     return model.getBroken(catalog, min1, max1, min2, max2)
 
-def getGeneros(catalog,genero, minimo, maximo):
-    return model.getGeneros(catalog,genero, minimo, maximo)
+def getGeneros(catalog, names):
+    return model.getGeneros(catalog, names)
+
+def crearGenero(catalog, name, min, max):
+    return model.crearGenero(catalog, name, min, max)
+
+def crearGenerosIniciales(catalog):
+    return model.crearGenerosIniciales(catalog)
 
 

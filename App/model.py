@@ -25,6 +25,7 @@
  """
 
 
+from DISClib.ADT.indexminpq import size
 from math import ldexp
 import config as cf
 from DISClib.ADT import list as lt
@@ -35,26 +36,15 @@ from DISClib.ADT import orderedmap as om
 import random
 assert cf
 
-"""
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
-"""
 
 # Construccion de modelos
 
 def newCatalog():
-    """ Inicializa el analizador
-
-    Crea una lista vacia para guardar todos los crimenes
-    Se crean indices (Maps) por los siguientes criterios:
-    -Fechas
-
-    Retorna el analizador inicializado.
-    """
     catalog = {'events': None,
                 'artists': None,
                 'tracks': None,
-                'caracteristicas': None}
+                'caracteristicas': None,
+                'generos': None}
 
     caracteristicas = {'instrumentalness': None,
                 'liveness': None,
@@ -80,6 +70,7 @@ def newCatalog():
     catalog['events'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
     catalog['artists'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
     catalog['tracks'] = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
+    catalog['generos'] = mp.newMap(100, maptype='PROBING', loadfactor=0.5)
     catalog["caracteristicas"] = caracteristicas
 
     return catalog
@@ -115,15 +106,19 @@ def loadCaracteristicas(catalog, event):
     loadCaracteristica(catalog["caracteristicas"]['mode'], event, "mode")
     loadCaracteristica(catalog["caracteristicas"]['key'], event, "key")
 
+
 # Funciones de consulta
 def eventSize(catalog):
     return mp.size(catalog['events'])
 
+
 def artistSize(catalog):
     return mp.size(catalog['artists'])
 
+
 def trackSize(catalog):
     return mp.size(catalog['tracks'])
+
 
 def getCaracteristicas(catalog, c1, min1, max1, c2, min2, max2):
     try:
@@ -153,9 +148,11 @@ def getCaracteristicas(catalog, c1, min1, max1, c2, min2, max2):
     
     if lt.size(listaFinal) != 0:
         mapTracks = getUniqueTracks(catalog, listaFinal)
-        art = getUniqueArtists(catalog, listaFinal)
+        mapArtists = getUniqueArtists(catalog, listaFinal)
+        
         repro = mp.size(mapTracks)
-
+        art = mp.size(mapArtists)
+    
     return repro, art, mapTracks
 
 
@@ -193,12 +190,60 @@ def getBroken(catalog, min1, max1, min2, max2):
     return repro, eightTracks
 
 
-def getGeneros(catalog,genero, minimo, maximo):
-    pass
+def getGeneros(catalog, names):
+    listaNames = lt.newList('ARRAY_LIST')
+    listaGen = lt.newList('ARRAY_LIST')
+    
+    names = names.split(',')
+    for name in names:
+        lt.addLast(listaNames, name.lower().strip())
+    
+    for i in range(1, lt.size(listaNames)+1):
+        nam = lt.getElement(listaNames, i)
+        gen = me.getValue(mp.get(catalog['generos'], nam))
+        lt.addLast(listaGen, gen)
+    
+    return listaGen
+
+
+def crearGenero(catalog, name, min, max):
+    genero = {'name': None,
+            'events': None,
+            'artists': None}
+    
+    events = lt.newList('ARRAY_LIST')
+
+    listEvents = om.values(catalog['caracteristicas']['tempo'], min, max)
+    for i in range(1, lt.size(listEvents)+1): 
+        ilist = lt.getElement(listEvents, i)
+        for j in range(1, lt.size(ilist)+1):
+            id = lt.getElement(ilist, j)
+            lt.addLast(events, id)
+    
+    artists = getUniqueArtists(catalog, events)
+
+    genero['name'] = name.lower().strip()
+    genero['events'] = events
+    genero['artists'] = mp.valueSet(artists)
+
+    mp.put(catalog['generos'], genero['name'], genero)
+
+    return genero
+
+
+def crearGenerosIniciales(catalog):
+    crearGenero(catalog, 'reggae', 60, 90)
+    crearGenero(catalog, 'down-tempo', 70, 100)
+    crearGenero(catalog, 'chill-out', 90, 120)
+    crearGenero(catalog, 'hip-hop', 85, 115)
+    crearGenero(catalog, 'jazz and funk', 120, 125)
+    crearGenero(catalog, 'pop', 100, 130)
+    crearGenero(catalog, 'r&b', 60, 80)
+    crearGenero(catalog, 'rock', 110, 140)
+    crearGenero(catalog, 'metal', 100, 160)
 
 
 # Funciones auxiliares
-
 def getUniqueArtists(catalog, idEvents):
     map = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
     for i in range(1, lt.size(idEvents)+1):
@@ -206,7 +251,8 @@ def getUniqueArtists(catalog, idEvents):
         event = me.getValue(mp.get(catalog['events'], id))
         artist_id = event['artist_id']
         mp.put(map, artist_id, artist_id)
-    return mp.size(map)
+    return map
+
 
 def getUniqueTracks(catalog, idEvents):
     map = mp.newMap(90000, maptype='PROBING', loadfactor=0.5)
@@ -216,9 +262,3 @@ def getUniqueTracks(catalog, idEvents):
         track_id = event['track_id']
         mp.put(map, track_id, event)
     return map
-
-# Funciones de comparación
-def compareDates(song1,song2):
-    pass
-
-# Funciones de ordenamiento
