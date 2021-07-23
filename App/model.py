@@ -153,7 +153,6 @@ def loadCaracteristicas(catalog, event):
     loadCaracteristica(catalog["carateristicas"]['Instrumentalness'], event,"instrumentalness")
     loadCaracteristica(catalog["carateristicas"]['Instrumentalness'], event,"instrumentalness")
 
-    mapa con track id y el evento
 
 def newTree(catalog, event ):
     tree = {'value': None}
